@@ -17,5 +17,7 @@
   become: true
 
 - name: Clear files
-  shell: rm ./{{ node_type }}_token
+  file:
+    path=./{{ node_type }}_token
+    state=absent
 
