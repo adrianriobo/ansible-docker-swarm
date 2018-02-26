@@ -7,7 +7,7 @@
     - swarmmanager
   become: true
 
-- name: Get swarm manager token
+- name: Get swarm token
   shell: sshpass -p {{ swarm_master_pass }} scp -o StrictHostKeyChecking=no \
          -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null \
          {{ swarm_master_user }}@{{ swarm_master_ip }}:/home/administrador/{{ node_type }}_token .
