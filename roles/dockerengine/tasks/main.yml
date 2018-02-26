@@ -73,3 +73,19 @@
   tags:
     - dockerengine
   become: true
+
+- name: Add docker swarm tcp rules
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    zone: public
+    state: enabled
+  with_items:
+    - 2377/tcp
+    - 7946/udp
+    - 4789/tcp
+  become: true 
+
+- name: Reload firewalld
+  service: name=firewalld state=reloaded
+  become: true
