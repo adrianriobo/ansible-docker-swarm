@@ -1,0 +1,21 @@
+---
+
+- name: Install sshpass
+  yum: name=sshpass state=installed
+  when: os.centos
+  tags:
+    - swarmmanager
+  become: true
+
+- name: Get swarm manager token
+  shell: sshpass -p {{ swarm_master_pass }} scp -o StrictHostKeyChecking=no \
+         -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null \
+         {{ swarm_master_user }}@{{ swarm_master_ip }}:/home/administrador/{{ node_type }}_token .
+
+- name: Add node to cluster
+  shell: docker swarm join --token $(cat ./{{ node_type }}_token) {{ swarm_master_ip }}:2377
+  become: true
+
+- name: Clear files
+  shell: rm ./{{ node_type }}_token
+

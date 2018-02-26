@@ -1,0 +1,12 @@
+--- 
+- hosts: all
+  tasks:
+  - debug:
+      msg: "Installing docker engine"
+  - import_role:
+      name: dockerengine
+  - debug:
+      msg: "Adding node to docker swarm"
+  - import_role:
+      name: swarmnode
+
