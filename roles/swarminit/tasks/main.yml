@@ -1,0 +1,10 @@
+---
+
+- name: Swarm initialization
+  shell: docker swarm init --advertise-addr {{ swarm_master_ip }}
+
+- name: Get worker token
+  shell: docker swarm join-token --quiet worker > $HOME/worker_token
+
+- name: Get manager token
+  shell: docker swarm join-token --quiet manager > $HOME/manager_token

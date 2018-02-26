@@ -1,0 +1,75 @@
+--- 
+- name: Install overlay2 dependencies (CentOS)
+  yum: name=yum-plugin-ovl state=installed
+  when: os.centos
+  tags:
+    - dockerengine
+  become: true 
+
+- name: Add Docker repository.
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: 0644
+  tags:
+    - dockerengine
+  become: true 
+
+- name: Configure Docker Edge repo.
+  ini_file:
+    dest: /etc/yum.repos.d/docker-ce.repo
+    section: docker-ce-edge
+    option: enabled
+    value: 1
+  tags:
+    - dockerengine
+  become: true 
+
+- name: Install docker ce
+  yum: name="{{ docker_version }}" state=installed
+  when: os.centos
+  tags:
+    - dockerengine
+  become: true 
+
+- name: Ensures /etc/docker dir exists
+  file: 
+    path=/etc/docker 
+    state=directory
+  become: true
+
+- name: Copy docker daemon config
+  copy:
+    src: ./../files/daemon.json
+    dest: /etc/docker/daemon.json
+    mode: 0644
+  tags:
+    - dockerengine
+  become: true 
+
+- name: Create plugins directory
+  file:
+    path: /etc/docker/plugins
+    state: directory
+  tags:
+    - dockerengine
+  become: true 
+
+- name: Ensure the Docker service is running (CentOS)
+  service:
+    name=docker
+    state=started
+    enabled=yes
+  when: os.centos
+  tags:
+    - dockerengine
+  become: true 
+
+- name: Adding user {{ ansible_user_id }}
+  user:
+    name={{ ansible_user_id }}
+    groups=docker
+    append=yes
+  tags:
+    - dockerengine
+  become: true
