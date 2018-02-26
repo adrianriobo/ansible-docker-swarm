@@ -14,17 +14,17 @@ Also the approach for using this project is local execution (i.e. inside remote-
 
 ## Sample invocation
 
-First manager node:
+- **First manager node**:
 
 ansible-playbook dockerswarminit.yml --extra-vars "ansible_sudo_pass=${LOCAL_ADMIN_PASS} swarm_master_ip=S{PRIVATE_FIXED_IP}"
 
-From any node (manager) in the cluster:
+- **From any node (manager) in the cluster**:
 
 ansible-playbook dockerswarmaddnode.yml --extra-vars "ansible_sudo_pass=${LOCAL_ADMIN_PASS} \
                  swarm_master_ip=S{MASTER_PRIVATE_FIXED_IP} swarm_master_pass=${MASTER_USER_PASS} \ 
                  swarm_master_user=${MASTER_USER} node_type=**manager**"
 
-From any node (worker) in the cluster:
+- **From any node (worker) in the cluster**:
 
 ansible-playbook dockerswarmaddnode.yml --extra-vars "ansible_sudo_pass=${LOCAL_ADMIN_PASS} \
                  swarm_master_ip=S{MASTER_PRIVATE_FIXED_IP} swarm_master_pass=${MASTER_USER_PASS} \
