@@ -2,9 +2,12 @@
 
 - name: Swarm initialization
   shell: docker swarm init --advertise-addr {{ swarm_master_ip }}
+  become: true
 
 - name: Get worker token
-  shell: docker swarm join-token --quiet worker > $HOME/worker_token
+  shell: docker swarm join-token --quiet worker > /home/{{ ansible_user }}/worker_token
+  become: true
 
 - name: Get manager token
-  shell: docker swarm join-token --quiet manager > $HOME/manager_token
+  shell: docker swarm join-token --quiet manager > /home/{{ ansible_user }}/worker_token
+  become: true
