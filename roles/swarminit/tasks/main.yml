@@ -9,5 +9,5 @@
   become: true
 
 - name: Get manager token
-  shell: docker swarm join-token --quiet manager > /home/{{ ansible_user }}/worker_token
+  shell: docker swarm join-token --quiet manager > /home/{{ ansible_user }}/manager_token
   become: true
